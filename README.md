@@ -13,14 +13,9 @@ This project is an AI-powered **Meeting Minutes Writer** that transcribes audio 
 
 ### Prerequisites
 Ensure you have the following installed:
-- Python 3.8+
+- Python 3.12
 - pip
 
-### Clone the Repository
-```bash
-git clone <repository-url>
-cd <project-folder>
-```
 
 ### Install Dependencies
 ```bash
@@ -44,19 +39,7 @@ streamlit run src\meeting_minutes\app.py
 2. Upload a `.wav` audio file.
 3. The AI will transcribe and generate meeting minutes.
 
-## Project Structure
-```
-.
-├── meeting_minutes_crew/
-│   ├── meeting_minutes_crew.py
-│   ├── config/
-│   │   ├── agents.yaml
-│   │   ├── tasks.yaml
-├── app.py
-├── requirements.txt
-├── .env (not included in repo)
-└── README.md
-```
+
 
 ## Configuration
 ### Agent Configuration (`config/agents.yaml`)
