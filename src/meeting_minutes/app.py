@@ -5,6 +5,7 @@ from openai import OpenAI
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import os
+import glob
 from dotenv import load_dotenv
 from crews.meeting_minutes_crew.meeting_minutes_crew import MeetingMinutesCrew
 
@@ -30,9 +31,12 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
 
         # Transcribe each chunk
         full_transcription = ""
+        chunk_files = []  # Store chunk filenames for cleanup
+
         for i, chunk in enumerate(chunks):
             chunk_path = f"chunk_{i}.wav"
             chunk.export(chunk_path, format="wav")
+            chunk_files.append(chunk_path)  # Track file for cleanup
             
             with open(chunk_path, "rb") as audio_file:
                 transcription = client.audio.transcriptions.create(
@@ -42,6 +46,10 @@ class MeetingMinutesFlow(Flow[MeetingMinutesState]):
                 full_transcription += transcription.text + " "
 
         self.state.transcript = full_transcription
+
+        # Cleanup chunk files
+        for file in chunk_files:
+            os.remove(file)
 
     @listen(transcribe_meeting)
     def generate_meeting_minutes(self):
@@ -63,10 +71,15 @@ if uploaded_file:
     with open(file_path, "wb") as f:
         f.write(uploaded_file.read())
 
-    # Process file and generate minutes
-    meeting_minutes_flow = MeetingMinutesFlow()
-    meeting_minutes_flow.transcribe_meeting(file_path)
-    meeting_minutes = meeting_minutes_flow.generate_meeting_minutes()
+    # Show loading spinner while processing
+    with st.spinner("Processing audio and generating meeting minutes..."):
+        meeting_minutes_flow = MeetingMinutesFlow()
+        meeting_minutes_flow.transcribe_meeting(file_path)
+        meeting_minutes = meeting_minutes_flow.generate_meeting_minutes()
+
+    # Delete uploaded audio file after processing
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
     # Display Meeting Minutes
     st.subheader("📝 Meeting Minutes")
