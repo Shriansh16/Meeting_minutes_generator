@@ -9,12 +9,11 @@ This project is an AI-powered **Meeting Minutes Writer** that transcribes audio 
 - **Structured Output**: Saves summaries, action items, and sentiment analysis in separate files.
 - **Streamlit UI**: Simple web interface to upload audio and generate meeting minutes.
 
-## Installation
-
-### Prerequisites
-Ensure you have the following installed:
+## Prerequisites
+Before running the application, ensure you have:
 - Python 3.12
-- pip
+- OpenAI API key
+- Required Python packages (install via pip install -r requirements.txt)
 
 
 ### Install Dependencies
@@ -26,6 +25,8 @@ pip install -r requirements.txt
 Create a `.env` file and add your OpenAI API key:
 ```env
 OPENAI_API_KEY=your_openai_api_key
+MODEL=model_name
+AGENTOPS_API_KEY=your_agentops_api_key
 ```
 
 ## Usage
