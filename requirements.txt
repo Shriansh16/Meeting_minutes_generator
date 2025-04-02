@@ -1,0 +1,7 @@
+crewai
+crewai_tools
+python-dotenv
+openai
+pydub
+agentops
+streamlit
